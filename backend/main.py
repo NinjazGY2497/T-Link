@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/update-phone-location-9ao101', methods=['POST'])
 def updatePhoneLocation():
     data = request.get_json()
-    requestKey = data.get("requestKey")
+    requestKey = request.headers.get("requestKey", None)
     
     if not authorizeRequest(requestKey):
         return {"error": "Unauthorized"}, 401
@@ -19,7 +19,7 @@ def updatePhoneLocation():
 @app.route('/get-locations-5z592q')
 def getLocations():
     data = request.get_json()
-    requestKey = data.get("requestKey")
+    requestKey = request.headers.get("requestKey", None)
     
     if not authorizeRequest(requestKey):
         return {"error": "Unauthorized"}, 401
@@ -29,3 +29,6 @@ def getLocations():
     # 3. Return the phone locations and the car locations
 
     return {"status": "success"}
+
+if __name__ == "__main__":
+    app.run(port="5000")
