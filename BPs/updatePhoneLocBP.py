@@ -27,13 +27,15 @@ def updatePhoneLocation():
         return {"error": "Unauthorized"}, 401
 
     # Process & Update
-    name, long, lat = data["name"], data["long"], data["lat"]
-    if long and lat:
+    name, long, lat = data.get("name", None), data.get("long", None), data.get("lat", None)
+    if name and long and lat:
         lastPhoneLocations[name] = {
             "lat": lat,
             "long": long,
             "timestamp": genTimestamp()
         }
         print(f"**updatePhoneLocBP.py** - New updated phone locations: {lastPhoneLocations}")
+    else:
+        return {"error": "Invalid data"}, 400
 
     return {"status": "success"}
