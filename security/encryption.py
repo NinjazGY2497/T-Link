@@ -4,7 +4,7 @@ import os
 
 load_dotenv()
 
-loadedKey = os.getenv("FLEET_API_KEY").encode()
+loadedKey = os.getenv("TOKEN_ENCRYPTION_KEY").encode()
 encryptionRecipe = Fernet(loadedKey)
 
 def encrypt(data):
