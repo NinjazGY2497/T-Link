@@ -13,7 +13,7 @@ def timeAndDateStr() -> str:
 def oauthCallback():
     data = request.args
     print(data)
-    with open("setup/OAuth/oauth-callback-data.txt", "a") as f:
+    with open("../setup/OAuth/oauth-callback-data.txt", "a") as f:
         f.write(timeAndDateStr() + str(data) + "\n")
 
     return """
