@@ -5,7 +5,7 @@ from security.authorizeRequest import authorizeRequest
 from security.encryption import encrypt, decrypt
 
 app = Flask(__name__)
-app.register_blueprint(setupBP)
+app.register_blueprint(setupBP, url_prefix="/setup")
 
 @app.route('/update-phone-location-9ao101', methods=['POST'])
 def updatePhoneLocation():
