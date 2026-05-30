@@ -1,26 +1,29 @@
 from flask import request, Flask
+
+from setupBP import setupBP
 from security.authorizeRequest import authorizeRequest
 from security.encryption import encrypt, decrypt
 
 app = Flask(__name__)
+app.register_blueprint(setupBP)
 
 @app.route('/update-phone-location-9ao101', methods=['POST'])
 def updatePhoneLocation():
     data = request.get_json()
     requestKey = request.headers.get("requestKey", None)
-    
+
     if not authorizeRequest(requestKey):
         return {"error": "Unauthorized"}, 401
-    
+
     # [Store phone location in variable]
-    
+
     return {"status": "success"}
 
 @app.route('/get-locations-5z592q')
 def getLocations():
     data = request.get_json()
     requestKey = request.headers.get("requestKey", None)
-    
+
     if not authorizeRequest(requestKey):
         return {"error": "Unauthorized"}, 401
 
