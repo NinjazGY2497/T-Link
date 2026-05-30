@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 
 setupBP = Blueprint('setup', __name__)
 
-@setupBP.route('/oauth-callback', methods=['POST'])
+@setupBP.route('/oauth-callback')
 def oauthCallback():
     data = request.get_json()
     with open("oauth-callback-data.txt", "a") as f:
