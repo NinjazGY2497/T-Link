@@ -36,6 +36,7 @@ def updatePhoneLocation():
         }
         print(f"**updatePhoneLocBP.py** - New updated phone locations: {lastPhoneLocations}")
     else:
+        print(f"**updatePhoneLocBP.py** - ERROR: Invalid data: {data}")
         return {"error": "Invalid data"}, 400
 
     return {"status": "success"}
