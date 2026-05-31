@@ -58,14 +58,14 @@ def getLocations():
     dadCarLoc: dict = retrieveLoc("dad")
     status = "updated"
 
-    if "error" in momCarLoc:
+    if momCarLoc.get("error") is not None:
         print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Mom's car location")
         status = "error"
         lastCarLocations["Mom"]["error"] = momCarLoc["error"]
     else:
         lastCarLocations["Mom"] = momCarLoc # Update cache
 
-    if "error" in dadCarLoc:
+    if dadCarLoc.get("error") is not None:
         print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Dad's car location")
         status = "error"
         lastCarLocations["Dad"]["error"] = dadCarLoc["error"]
