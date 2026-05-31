@@ -1,21 +1,11 @@
 from flask import Blueprint, request, jsonify
 from security.authorizeRequest import authorizeRequest
 from timestamp import genTimestamp
+from loadSaveLocations import load, save
 
 updatePhoneLocBP = Blueprint('updatePhoneLoc', __name__)
 
-lastPhoneLocations = {
-    "Mom": {
-        "lat": None,
-        "long": None,
-        "timestamp": None
-    },
-    "Dad": {
-        "lat": None,
-        "long": None,
-        "timestamp": None
-    }
-}
+lastPhoneLocations = load("Phone")
 
 @updatePhoneLocBP.route('/update-phone-location-9ao101', methods=['POST'])
 def updatePhoneLocation():
@@ -36,6 +26,7 @@ def updatePhoneLocation():
             "long": long,
             "timestamp": genTimestamp()
         }
+        save("Phone", lastPhoneLocations)
         print(f"**updatePhoneLocBP.py** - New updated phone locations: {lastPhoneLocations}\n")
     else:
         print(f"**updatePhoneLocBP.py** - ERROR: Invalid data: {data}\n")

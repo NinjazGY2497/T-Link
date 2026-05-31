@@ -4,30 +4,12 @@ from time import time
 from security.authorizeRequest import authorizeRequest
 import BPs.updatePhoneLocBP as updatePhoneLocBP
 from retrieveLoc import retrieveLoc
+from loadSaveLocations import load, save
 
 getLocationsBP = Blueprint('getLocations', __name__)
 
 lastCarLocRequest = 0 # (Timestamp)
-lastCarLocations: dict = {
-    "Mom": {
-        "latitude": None,
-        "longitude": None,
-        "heading": None,
-        "timestamp": None,
-        "driving_state": None, # (shift_state)
-        "online_state": None,
-        "error": None
-    },
-    "Dad": {
-        "latitude": None,
-        "longitude": None,
-        "heading": None,
-        "timestamp": None,
-        "driving_state": None, # (shift_state)
-        "online_state": None,
-        "error": None
-    }
-}
+lastCarLocations: dict = load("Car")
 
 def processCarLoc(person: str, personCarLoc: dict) -> bool: # (returns successful)
     """Updates lastCarLocations, handles errors, handles offline, and returns successful (bool)"""
@@ -88,7 +70,8 @@ def getLocations():
     dadSuccess = processCarLoc("Dad", dadCarLoc)
     status = "success" if (momSuccess and dadSuccess) else "error"
 
-    print(f"**getLocationsBP.py** - Returning these car locations, whether retrieval was successful or not: {lastCarLocations}. Status is: {status}\n")
+    print(f"**getLocationsBP.py** - Returning & saving these car locations, whether retrieval was successful or not: {lastCarLocations} | Status is: {status}\n")
+    save("Car", lastCarLocations)
 
     return jsonify({
         "status": status,
