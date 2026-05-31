@@ -10,7 +10,6 @@ def retrieveLoc(person: str):
         accessToken, refreshToken, error = refreshTokens(person, refreshToken)
 
         if error:
-            print(f"**retrieveLoc.py** - ERROR: Failed to refresh tokens: {error}")
             return {"error": str(error)}
 
         print(f"**retrieveLoc.py** - Refreshed, encrypted, and stored tokens.")
