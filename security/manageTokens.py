@@ -45,7 +45,7 @@ def refreshTokens(person: str, refreshToken) -> tuple[str, str, None | Exception
     }
     try:
         r = requests.post(TOKEN_URL, data=body, headers=headers)
-        r.raise_for_status() # Raise if error-y status code arrives
+        r.raise_for_status()
     except (HTTPError, RequestException) as e:
         print(f"**manageTokens.py** - ERROR: Failed to refresh tokens | Error: {type(e).__name__} {e}")
         return None, None, e
