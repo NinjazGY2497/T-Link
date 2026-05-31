@@ -37,7 +37,7 @@ def retrieveLoc(person: str):
 
     # If first locError was not 401/403, OR if receiving location failed for a 2nd time
     if locError:
-        # --- Pre-Step 5 --- (Catch 408 Car is Offline error)
+        # --- Step 5 ---
         if isinstance(locError, HTTPError) and locError.response.status_code == 408:
             print("**retrieveLoc.py** - ERROR: Got a 408; aborting because car is offline.")
             return {"online_state": "Offline"}

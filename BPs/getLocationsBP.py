@@ -29,15 +29,40 @@ lastCarLocations: dict = {
     }
 }
 
+def processCarLoc(person: str, personCarLoc: dict) -> bool: # (returns successful)
+    """Updates lastCarLocations, handles errors, handles offline, and returns successful (bool)"""
+    global lastCarLocations
+
+    successful: bool = True
+
+    if personCarLoc.get("online_state") == "Offline":
+        # Offline - Use Cached Locations
+        print(f"**getLocationsBP.py** - {person}'s car is offline; using cached car location")
+        lastCarLocations[person]["online_state"] = "Offline"
+        lastCarLocations[person]["error"] = None # (Clear any older errors)
+
+    elif personCarLoc.get("error") is not None:
+        # Error Occurred - Use Cached Locations
+        print(f"**getLocationsBP.py** - ERROR: Failed to retrieve {person}'s car location")
+        successful = False
+        lastCarLocations[person]["error"] = personCarLoc["error"]
+
+    else:
+        # Perfect - Update Car Location
+        lastCarLocations[person] = personCarLoc
+
+    return successful
+
 @getLocationsBP.route('/get-locations-5z592q', methods=['GET'])
 def getLocations():
     global lastCarLocRequest
+    global lastCarLocations
 
     requestKey = request.headers.get("requestKey", None)
 
     # --- Step 1 ---
     if not authorizeRequest(requestKey):
-        print(f"**getLocationsBP.py** - Unauthorized request!")
+        print(f"**getLocationsBP.py** - Unauthorized request!\n")
         return {"error": "Unauthorized"}, 401
 
     # --- Easy Retrieval ---
@@ -46,9 +71,9 @@ def getLocations():
 
     # --- Step 2 ---
     if time() < lastCarLocRequest + 30:
-        print(f"**getLocationsBP.py** - Returning cached car locations")
+        print(f"**getLocationsBP.py** - Returning cached car locations\n")
         return jsonify({
-            "status": "cached",
+            "status": "success",
             "phoneLocations": phoneLocs,
             "carLocations": lastCarLocations
         })
@@ -57,24 +82,14 @@ def getLocations():
     lastCarLocRequest = time()
     momCarLoc: dict = retrieveLoc("mom")
     dadCarLoc: dict = retrieveLoc("dad")
-    status = "updated"
 
-    # --- After Getting Car Locs ---
-    if momCarLoc.get("error") is not None:
-        print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Mom's car location")
-        status = "error"
-        lastCarLocations["Mom"]["error"] = momCarLoc["error"]
-    else:
-        lastCarLocations["Mom"] = momCarLoc # Update cache
+    # --- Process Car Locations ---
+    momSuccess = processCarLoc("Mom", momCarLoc)
+    dadSuccess = processCarLoc("Dad", dadCarLoc)
+    status = "success" if (momSuccess and dadSuccess) else "error"
 
-    if dadCarLoc.get("error") is not None:
-        print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Dad's car location")
-        status = "error"
-        lastCarLocations["Dad"]["error"] = dadCarLoc["error"]
-    else:
-        lastCarLocations["Dad"] = dadCarLoc # Update cache
+    print(f"**getLocationsBP.py** - Returning these car locations, whether retrieval was successful or not: {lastCarLocations}. Status is: {status}\n")
 
-    print(f"**getLocationsBP.py** - Returning these car locations, whether retrieval was successful or not: {lastCarLocations}")
     return jsonify({
         "status": status,
         "phoneLocations": phoneLocs,
