@@ -53,11 +53,13 @@ def getLocations():
             "carLocations": lastCarLocations
         })
 
+    # --- Step 3 "Dispatcher" ---
     lastCarLocRequest = time()
     momCarLoc: dict = retrieveLoc("mom")
     dadCarLoc: dict = retrieveLoc("dad")
     status = "updated"
 
+    # --- After Getting Car Locs ---
     if momCarLoc.get("error") is not None:
         print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Mom's car location")
         status = "error"
