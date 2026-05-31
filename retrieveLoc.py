@@ -51,3 +51,4 @@ def retrieveLoc(person: str):
 
 if __name__ == "__main__":
     print(retrieveLoc("mom"))
+    print(retrieveLoc("dad"))
