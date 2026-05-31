@@ -25,7 +25,7 @@ def updatePhoneLocation():
     requestKey = request.headers.get("requestKey", None)
 
     if not authorizeRequest(requestKey):
-        print(f"**updatePhoneLocBP.py** - Unauthorized request!")
+        print(f"**updatePhoneLocBP.py** - Unauthorized request!\n")
         return {"error": "Unauthorized"}, 401
 
     # Process & Update
@@ -36,9 +36,9 @@ def updatePhoneLocation():
             "long": long,
             "timestamp": genTimestamp()
         }
-        print(f"**updatePhoneLocBP.py** - New updated phone locations: {lastPhoneLocations}")
+        print(f"**updatePhoneLocBP.py** - New updated phone locations: {lastPhoneLocations}\n")
     else:
-        print(f"**updatePhoneLocBP.py** - ERROR: Invalid data: {data}")
+        print(f"**updatePhoneLocBP.py** - ERROR: Invalid data: {data}\n")
         return {"error": "Invalid data"}, 400
 
     return {"status": "success"}
