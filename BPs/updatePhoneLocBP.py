@@ -19,6 +19,8 @@ lastPhoneLocations = {
 
 @updatePhoneLocBP.route('/update-phone-location-9ao101', methods=['POST'])
 def updatePhoneLocation():
+    global lastPhoneLocations
+
     data = request.get_json()
     requestKey = request.headers.get("requestKey", None)
 
