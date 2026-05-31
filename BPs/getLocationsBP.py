@@ -15,7 +15,8 @@ lastCarLocations: dict = {
         "heading": None,
         "timestamp": None,
         "driving_state": None, # (shift_state)
-        "online_state": None
+        "online_state": None,
+        "error": None
     },
     "Dad": {
         "latitude": None,
@@ -23,7 +24,8 @@ lastCarLocations: dict = {
         "heading": None,
         "timestamp": None,
         "driving_state": None, # (shift_state)
-        "online_state": None
+        "online_state": None,
+        "error": None
     }
 }
 
@@ -59,12 +61,14 @@ def getLocations():
     if "error" in momCarLoc:
         print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Mom's car location")
         status = "error"
+        lastCarLocations["Mom"]["error"] = momCarLoc["error"]
     else:
         lastCarLocations["Mom"] = momCarLoc # Update cache
 
     if "error" in dadCarLoc:
         print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Dad's car location")
         status = "error"
+        lastCarLocations["Dad"]["error"] = dadCarLoc["error"]
     else:
         lastCarLocations["Dad"] = dadCarLoc # Update cache
 
