@@ -1,11 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
+from datetime import datetime, timezone
+
 from security.authorizeRequest import authorizeRequest
-from timestamp import genTimestamp
 from loadSaveLocations import load, save
 
 updatePhoneLocBP = Blueprint('updatePhoneLoc', __name__)
 
 lastPhoneLocations = load("Phone")
+
+def genTimestamp() -> int:
+    utcNow = datetime.now(timezone.utc)
+    return int(utcNow.timestamp())
 
 @updatePhoneLocBP.route('/update-phone-location-9ao101', methods=['POST'])
 def updatePhoneLocation():
