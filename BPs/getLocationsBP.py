@@ -55,20 +55,20 @@ def getLocations():
     momCarLoc: dict = retrieveLoc("mom")
     dadCarLoc: dict = retrieveLoc("dad")
     status = "updated"
-    print(f"**getLocationsBP.py** - Retrieved car locations: {momCarLoc} and {dadCarLoc}")
 
     if "error" in momCarLoc:
         print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Mom's car location")
         status = "error"
     else:
-        lastCarLocations["Mom"] = momCarLoc # Use cached
+        lastCarLocations["Mom"] = momCarLoc # Update cache
 
     if "error" in dadCarLoc:
         print(f"**getLocationsBP.py** - ERROR: Failed to retrieve Dad's car location")
         status = "error"
     else:
-        lastCarLocations["Dad"] = dadCarLoc # Use cached
+        lastCarLocations["Dad"] = dadCarLoc # Update cache
 
+    print(f"**getLocationsBP.py** - Returning these car locations, whether retrieval was successful or not: {lastCarLocations}")
     return jsonify({
         "status": status,
         "phoneLocations": phoneLocs,
