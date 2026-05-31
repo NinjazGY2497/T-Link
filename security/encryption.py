@@ -14,4 +14,5 @@ def decrypt(token):
     return encryptionRecipe.decrypt(token).decode()
 
 if __name__ == "__main__":
-    print(encrypt("Hello World"))
+    text = input("Enter text to encrypt: ")
+    print(encrypt(text))
