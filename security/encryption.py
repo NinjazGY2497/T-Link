@@ -8,7 +8,7 @@ loadedKey = os.getenv("TOKEN_ENCRYPTION_KEY").encode()
 encryptionRecipe = Fernet(loadedKey)
 
 def encrypt(data):
-    return encryptionRecipe.encrypt(data.encode())
+    return encryptionRecipe.encrypt(data.encode()).decode()
 
 def decrypt(token):
     return encryptionRecipe.decrypt(token).decode()
