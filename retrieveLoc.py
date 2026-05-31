@@ -50,4 +50,4 @@ def retrieveLoc(person: str):
     return locInfo
 
 if __name__ == "__main__":
-    retrieveLoc("mom")
+    print(retrieveLoc("mom"))
