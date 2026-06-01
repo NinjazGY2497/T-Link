@@ -24,8 +24,8 @@ def updatePhoneLocation():
         return {"error": "Unauthorized"}, 401
 
     # Process & Update
-    name, long, lat = data.get("name", None), data.get("long", None), data.get("lat", None)
-    if name and long and lat:
+    name, lat, long = data.get("name", None), data.get("lat", None), data.get("long", None)
+    if name and lat and long:
         lastPhoneLocations[name] = {
             "lat": lat,
             "long": long,
