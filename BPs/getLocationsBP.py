@@ -58,7 +58,7 @@ def getLocations():
             "status": "success",
             "phoneLocations": phoneLocs,
             "carLocations": lastCarLocations
-        })
+        }), 200
 
     # --- Step 3 "Dispatcher" ---
     lastCarLocRequest = time()
@@ -77,4 +77,4 @@ def getLocations():
         "status": status,
         "phoneLocations": phoneLocs,
         "carLocations": lastCarLocations,
-    })
+    }), 500 if status == "error" else 200
