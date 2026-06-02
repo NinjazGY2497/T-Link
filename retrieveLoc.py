@@ -45,7 +45,7 @@ def retrieveLoc(person: str):
             print("**retrieveLoc.py** - ERROR: Aborting retrieveLoc.py due to unknown location grabbing error")
             return {"error": str(locError)}
 
-    print("**retrieveLoc.py** - Successfully retrieved location info.")
+    print(f"**retrieveLoc.py** - Successfully retrieved location info for {person}.")
 
     return locInfo
 
