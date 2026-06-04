@@ -10,6 +10,7 @@ getLocationsBP = Blueprint('getLocations', __name__)
 
 lastCarLocRequest = 0 # (Timestamp)
 lastCarLocations: dict = load("lastCarLocations")
+locAccessHistory: dict = load("locAccessHistory")
 
 def processCarLoc(person: str, personCarLoc: dict) -> bool: # (returns successful)
     """Updates lastCarLocations, handles errors, handles offline, and returns successful (bool)"""
@@ -39,17 +40,29 @@ def processCarLoc(person: str, personCarLoc: dict) -> bool: # (returns successfu
 def getLocations():
     global lastCarLocRequest
     global lastCarLocations
+    global locAccessHistory
 
     requestKey = request.headers.get("requestKey", None)
+    requester = request.headers.get("requester", None)
 
     # --- Step 1 ---
     if not authorizeRequest(requestKey):
         print(f"**getLocationsBP.py** - Unauthorized request!\n")
         return {"error": "Unauthorized"}, 401
 
+    # --- Validate Requester ---
+    if requester not in ("Mom", "Dad", "Child"):
+        print(f"**getLocationsBP.py** - ERROR: Invalid requester: {requester}\n")
+        return {"error": "Invalid or not found requester header"}, 401
+
     # --- Easy Retrieval ---
     phoneLocs = updatePhoneLocBP.lastPhoneLocations
     print(f"**getLocationsBP.py** - Retrieved phone locations: {phoneLocs}")
+
+    # --- Save Location Access History ---
+    locAccessHistory[requester] = int(time())
+    save("locAccessHistory", locAccessHistory)
+    print(f"**getLocationsBP.py** - Updated location access history : {locAccessHistory}")
 
     # --- Step 2 ---
     if time() < lastCarLocRequest + 30:
@@ -57,7 +70,8 @@ def getLocations():
         return jsonify({
             "status": "success",
             "phoneLocations": phoneLocs,
-            "carLocations": lastCarLocations
+            "carLocations": lastCarLocations,
+            "locationAccessHistory": locAccessHistory
         }), 200
 
     # --- Step 3 "Dispatcher" ---
@@ -77,4 +91,5 @@ def getLocations():
         "status": status,
         "phoneLocations": phoneLocs,
         "carLocations": lastCarLocations,
+        "locationAccessHistory": locAccessHistory
     }), 500 if status == "error" else 200
