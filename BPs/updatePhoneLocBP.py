@@ -6,7 +6,7 @@ from loadSaveLocations import load, save
 
 updatePhoneLocBP = Blueprint('updatePhoneLoc', __name__)
 
-lastPhoneLocations = load("Phone")
+lastPhoneLocations = load("lastPhoneLocations")
 
 def genTimestamp() -> int:
     utcNow = datetime.now(timezone.utc)
@@ -31,7 +31,7 @@ def updatePhoneLocation():
             "long": long,
             "timestamp": genTimestamp()
         }
-        save("Phone", lastPhoneLocations)
+        save("lastPhoneLocations", lastPhoneLocations)
         print(f"**updatePhoneLocBP.py** - New updated phone locations: {lastPhoneLocations}\n")
     else:
         print(f"**updatePhoneLocBP.py** - ERROR: Invalid data: {data}\n")

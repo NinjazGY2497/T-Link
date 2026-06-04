@@ -9,7 +9,7 @@ from loadSaveLocations import load, save
 getLocationsBP = Blueprint('getLocations', __name__)
 
 lastCarLocRequest = 0 # (Timestamp)
-lastCarLocations: dict = load("Car")
+lastCarLocations: dict = load("lastCarLocations")
 
 def processCarLoc(person: str, personCarLoc: dict) -> bool: # (returns successful)
     """Updates lastCarLocations, handles errors, handles offline, and returns successful (bool)"""
@@ -71,7 +71,7 @@ def getLocations():
     status = "success" if (momSuccess and dadSuccess) else "error"
 
     print(f"**getLocationsBP.py** - Returning & saving these car locations, whether retrieval was successful or not: {lastCarLocations} | Status is: {status}\n")
-    save("Car", lastCarLocations)
+    save("lastCarLocations", lastCarLocations)
 
     return jsonify({
         "status": status,
