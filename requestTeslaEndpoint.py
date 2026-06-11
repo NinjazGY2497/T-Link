@@ -32,8 +32,8 @@ def requestTeslaEndpoint(person: str, accessToken) -> tuple[dict, Exception | No
         isDriving = False
 
     return {
-        "latitude": locData["latitude"],
-        "longitude": locData["longitude"],
+        "lat": locData["latitude"],
+        "long": locData["longitude"],
         "heading": locData["heading"],
         "timestamp": locData["timestamp"] / 1000,
         "driving_state": "Driving" if isDriving else "Parked",

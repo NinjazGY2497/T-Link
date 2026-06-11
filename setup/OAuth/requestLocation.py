@@ -15,8 +15,8 @@ print(data)
 locData = data["response"]["drive_state"]
 print(f"Timestamp: {locData['timestamp']}")
 print(f"Heading: {locData['heading']}")
-print(f"Latitude: {locData['latitude']}")
-print(f"Longitude: {locData['longitude']}")
+print(f"Lat: {locData['latitude']}")
+print(f"Long: {locData['longitude']}")
 
 shiftState = locData["shift_state"]
 if shiftState in ("D", "R", "N"):
