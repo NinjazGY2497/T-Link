@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from time import time
 
-from security.authorizeRequest import authorizeRequest
+from security.authorizeRequest import authorizeRequest, authorizeSampleRequest
 import BPs.updatePhoneLocBP as updatePhoneLocBP
 from retrieveLoc import retrieveLoc
 from loadSaveLocations import load, save
@@ -44,8 +44,51 @@ def getLocations():
 
     requestKey = request.headers.get("requestKey", None)
     requester = request.headers.get("requester", None)
-
+    print(requestKey)
     # --- Step 1 ---
+    if authorizeSampleRequest(requestKey):
+        print(f"**getLocationsBP.py** - Authorized sample request\n")
+        return jsonify({
+            "status": "success",
+            "phoneLocations": {
+                "Mom": {
+                    "lat": [REDACTED],
+                    "long": [REDACTED],
+                    "timestamp": 1781229621
+                },
+                "Dad": {
+                    "lat": [REDACTED],
+                    "long": [REDACTED],
+                    "timestamp": 1781216299
+                }
+            },
+            "carLocations": {
+                "Mom": {
+                    "lat": [REDACTED],
+                    "long": [REDACTED],
+                    "heading": 87,
+                    "timestamp": 1781219729,
+                    "driving_state": "Driving",
+                    "online_state": "Online",
+                    "error": None
+                },
+                "Dad": {
+                    "lat": [REDACTED],
+                    "long": [REDACTED],
+                    "heading": 33,
+                    "timestamp": 1780590191,
+                    "driving_state": "Parked",
+                    "online_state": "Offline",
+                    "error": None
+                }
+            },
+            "locationAccessHistory": {
+                "Mom": 1781229633,
+                "Dad": 1781216328,
+                "Child": 1781029541
+            }
+        }), 200
+
     if not authorizeRequest(requestKey):
         print(f"**getLocationsBP.py** - Unauthorized request!\n")
         return {"error": "Unauthorized"}, 401

@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from datetime import datetime, timezone
 
-from security.authorizeRequest import authorizeRequest
+from security.authorizeRequest import authorizeRequest, authorizeSampleRequest
 from loadSaveLocations import load, save
 
 updatePhoneLocBP = Blueprint('updatePhoneLoc', __name__)
@@ -18,6 +18,10 @@ def updatePhoneLocation():
 
     data = request.get_json()
     requestKey = request.headers.get("requestKey", None)
+
+    if authorizeSampleRequest(requestKey):
+        print(f"**updatePhoneLocBP.py** - Authorized sample request\n")
+        return {"status": "success"}, 200
 
     if not authorizeRequest(requestKey):
         print(f"**updatePhoneLocBP.py** - Unauthorized request!\n")
