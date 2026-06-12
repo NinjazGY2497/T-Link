@@ -44,7 +44,7 @@ def getLocations():
 
     requestKey = request.headers.get("requestKey", None)
     requester = request.headers.get("requester", None)
-    print(requestKey)
+
     # --- Step 1 ---
     if authorizeSampleRequest(requestKey):
         print(f"**getLocationsBP.py** - Authorized sample request\n")
